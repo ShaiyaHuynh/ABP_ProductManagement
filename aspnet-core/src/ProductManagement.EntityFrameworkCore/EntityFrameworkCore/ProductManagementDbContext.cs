@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProductManagement.Categories;
+using ProductManagement.Products;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
@@ -50,6 +52,9 @@ public class ProductManagementDbContext :
     public DbSet<Tenant> Tenants { get; set; }
     public DbSet<TenantConnectionString> TenantConnectionStrings { get; set; }
 
+    // Custom
+    public DbSet<Product> Products { get; set; }
+    public DbSet<Category> Categories { get; set; }
     #endregion
 
     public ProductManagementDbContext(DbContextOptions<ProductManagementDbContext> options)
@@ -81,5 +86,29 @@ public class ProductManagementDbContext :
         //    b.ConfigureByConvention(); //auto configure for the base class props
         //    //...
         //});
+
+        // Create table Categories with defines entity Category
+        builder.Entity<Category>(b =>
+        {
+            b.ToTable("Categories");
+            b.Property(x => x.Name)
+                .HasMaxLength(CategoryConsts.MaxNameLength)
+                .IsRequired();
+            b.HasIndex(x => x.Name);
+        });
+        // Create table Products with defines entity Product
+        builder.Entity<Product>(b =>
+        {
+            b.ToTable("Products");
+            b.Property(x => x.Name)
+                .HasMaxLength(ProductConsts.MaxNameLength)
+                .IsRequired();
+            b.HasOne(x => x.Category)
+                .WithMany()
+                .HasForeignKey(x => x.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired();
+            b.HasIndex(x => x.Name).IsUnique();
+        });
     }
 }
