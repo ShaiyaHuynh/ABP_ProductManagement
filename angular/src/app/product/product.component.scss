@@ -1,0 +1,19 @@
+.ngx-datatable{
+    display: block;
+    overflow: hidden;
+    justify-content: center;
+    position: relative;
+    transform: translate(0);
+}
+.ngx-datatable.material{
+    background-color: #fff;
+    box-shadow:0 5px 5px -3px #0003, 0 8px 10px 1px #00000024, 0 3px 14px 2px #0000001f;
+}
+
+.ngx-datatable.ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell, .ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-group-cell{
+    text-align: left;
+    padding: 0.9rem, 1.2rem;
+    border-top: 0;
+    color: #000000de;
+    transform: width .3s ease;
+}
